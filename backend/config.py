@@ -13,7 +13,8 @@ class Settings(BaseSettings):
     )
 
     # LLM
-    model: str = "llama-3.3-70b-versatile"
+    model: str = "groq/compound"
+    vision_model: str = "qwen/qwen3.8-27b"
     groq_api_key: str = ""
     embed_model: str = "all-MiniLM-L6-v2"
 
@@ -53,6 +54,7 @@ class Settings(BaseSettings):
 @lru_cache()
 def get_settings() -> Settings:
     import os
+    os.environ["ANONYMIZED_TELEMETRY"] = "False"
     settings = Settings()
     key = settings.groq_api_key
     if key:

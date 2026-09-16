@@ -300,7 +300,7 @@ export default function ChatPage() {
                 📄 {activeDoc.total_pages.toLocaleString()} pages
               </span>
             )}
-            <span className="badge badge-cyan">🤖 Groq Qwen-3.8</span>
+            <span className="badge badge-cyan">🤖 Groq Llama-3.3</span>
           </div>
         </div>
 

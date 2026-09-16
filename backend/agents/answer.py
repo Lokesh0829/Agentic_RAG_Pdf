@@ -24,20 +24,17 @@ _streaming_llm = ChatGroq(
     temperature=0.3,
 )
 
-ANSWER_SYSTEM = """You are a helpful, expert document-based question answering assistant.
+ANSWER_SYSTEM = """You are an expert PDF document assistant. Your task is to provide accurate, comprehensive answers based ONLY on the provided document context.
 
-The documents may be written in Bengali.
+Rules:
+1. Answer ONLY based on the provided context — do NOT use outside knowledge
+2. Always cite the page number(s) where you found the information: [Page X]
+3. If the context doesn't contain enough information, say so clearly
+4. For tables, preserve the structure in your response using markdown
+5. Be concise but thorough
+6. If the question was about an image or chart, describe what the OCR text reveals
 
-Instructions:
-1. Understand any Bengali content in the retrieved document context.
-2. Answer the user's question in English. Do not respond in Bengali unless the user explicitly asks for Bengali.
-3. Answer ONLY based on the provided context — do NOT use outside knowledge.
-4. If the answer is not present in the context, say:
-   "I could not find this information in the document."
-5. Always cite the page number(s) where you found the information: [Page X] at the end of relevant sentences.
-6. For tables, preserve the structure in your response using markdown.
-7. If the question was about an image or chart, describe what the OCR text reveals.
-"""
+Format citations as: [Page X] at the end of relevant sentences."""
 
 
 def _build_context(retrieved_docs: list[dict]) -> tuple[str, list[dict]]:

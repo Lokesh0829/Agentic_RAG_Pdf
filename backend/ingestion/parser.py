@@ -51,13 +51,14 @@ class ParsedChunk:
 
 
 def describe_image_with_vision(image_bytes: bytes) -> str:
-    """Describe image using Groq's multimodal vision model (llama-3.2-11b-vision-preview)."""
+    """Describe image using Groq's multimodal vision model (qwen/qwen3.8-27b)."""
     import base64
     import httpx
     from config import get_settings
 
     settings = get_settings()
     api_key = settings.groq_key
+    vision_model = settings.vision_model or "qwen/qwen3.8-27b"
 
     if not api_key:
         logger.info("ℹ️ Groq API key is missing. Skipping image visual description.")
@@ -73,14 +74,14 @@ def describe_image_with_vision(image_bytes: bytes) -> str:
         }
 
         payload = {
-            "model": settings.model,
+            "model": vision_model,
             "messages": [
                 {
                     "role": "user",
                     "content": [
                         {
                             "type": "text",
-                            "text": "Describe this image in detail. What is shown, what are the key elements, objects, charts or diagrams?"
+                            "text": "Describe this image in detail. What is shown, what are the key elements, objects, text, charts, or diagrams? Provide a clear and thorough explanation."
                         },
                         {
                             "type": "image_url",
@@ -91,10 +92,11 @@ def describe_image_with_vision(image_bytes: bytes) -> str:
                     ]
                 }
             ],
+            "max_tokens": 1000,
             "temperature": 0.2
         }
 
-        logger.info(f"👁️ Analyzing image using Groq vision model '{settings.model}'...")
+        logger.info(f"👁️ Analyzing image using Groq vision model '{vision_model}'...")
         with httpx.Client(timeout=30.0) as client:
             resp = client.post(
                 "https://api.groq.com/openai/v1/chat/completions",
