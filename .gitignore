@@ -38,5 +38,5 @@ Thumbs.db
 .pytest_cache/
 .mypy_cache/
 
-uploads/
-Senior_AI_Engineer_Interview_QA.pdf
+backend/uploads/
+backend/**/*.pdf
